@@ -1,0 +1,177 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
+{% endblock %}	
+{% block body %}
+
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">Accueil</li>
+		<li class="breadcrumb-item active">Nouveau trade</li>
+
+		<!-- Breadcrumb Menu-->
+		<li class="breadcrumb-menu d-md-down-none">
+			<div class="btn-group" role="group" aria-label="Button group">
+				<a class="btn" href="#"><i class="icon-speech"></i></a>
+				<a class="btn" href="./"><i class="icon-graph"></i> &nbsp;Dashboard</a>
+				<a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>
+			</div>
+		</li>
+	</ol>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						Déclarer un nouveau trade
+					</div>
+					<div class="card-body">
+						{{ form_start(form, { 'action': path('new_trade'), 'method':'POST'}) }}
+
+						<div class="form-row">
+							<div class="form-group col-md->6">
+								{{ form_label(form.stockName) }}
+								{{ form_widget(form.stockName, {'attr': {'class': 'form-control'}}) }}
+							</div>
+							<div class="form-group col-md-2">
+								{{ form_label(form.ticker) }}
+								{{ form_widget(form.ticker, {'attr': {'class': 'form-control'}}) }}
+							</div>
+							<div class="form-group col-md-3">
+								{{ form_label(form.market) }}
+								{{ form_widget(form.market, {'attr': {'class': 'form-control'}}) }}
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-2">
+								{{ form_label(form.entryPrice) }}
+								{{ form_widget(form.entryPrice, {'attr': {'class': 'form-control'}}) }}
+							</div>
+							<div class="form-group col-md-2">
+								{{ form_label(form.stopPrice) }}
+								{{ form_widget(form.stopPrice, {'attr': {'class': 'form-control'}}) }}
+							</div>
+							<div class="form-group col-md-2">
+								{{ form_label(form.nbOfShares) }}
+								{{ form_widget(form.nbOfShares, {'attr': {'class': 'form-control'}}) }}
+							</div>
+							<div class="form-group col-md-4">
+
+								{{ form_label(form.submittedAt) }}
+								<div class="input-group date">
+								{{ form_widget(form.submittedAt, {'attr': {'class': 'form-control'}}) }}
+								<span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+							</div>
+								<small id="trade_form_submittedAtHelpBlock" class="form-text text-muted">
+									Rétro-activité possible
+								</small>
+								
+								
+							</div>
+						</div>
+
+						
+						{{ form_widget(form) }}
+					</div>
+					<div class="card-footer">
+						<div class="form-group">
+							<button type="submit" name="Enregistrer" value="Enregistrer" class="btn btn-primary">Enregistrer</button>
+							<a href="{{ path('home') }}" value="Annuler" class="btn btn-default">Annuler</a>
+						</div>
+					</div>
+					{{ form_end(form) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						Assistant - Aide à la décision
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="callout callout-info">
+									<small class="text-muted">Liquidité</small><br>
+									<strong class="h4">1050,23€</strong>
+								</div>
+							</div><!--/.col-->
+							<div class="col-sm-4">
+								<div class="callout callout-primary">
+									<small class="text-muted">Ligne</small><br>
+									<strong class="h4">1433,23€</strong>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="callout callout-warning">
+									<small class="text-muted">Sentiment de marché</small><br>
+									<strong class="h4">Positif</strong>
+								</div>
+							</div>
+						</div>
+						<div class="row justify-content-around">
+							<div class="col-sm-4">
+								<div class="callout callout-success">
+									<small class="text-muted">Quantité max</small><br>
+									<strong class="h4">1200</strong>
+								</div>
+							</div><!--/.col-->
+							<div class="col-sm-4">
+								<div class="callout">
+									<small class="text-muted">% Capital</small><br>
+									<strong class="h4">78%</strong>
+								</div>
+							</div><!--/.col-->
+							<div class="col-sm-4">
+								<div class="callout callout-primary">
+									<small class="text-muted">Rique/trade</small><br>
+									<strong class="h4">0,70</strong>
+								</div>
+							</div><!--/.col-->
+							
+						</div><!--/.row-->
+						<div class="row justify-content-around">
+							
+							<div class="col-sm-3">
+								<div class="callout callout-danger">
+									<small class="text-muted">Cartouches</small><br>
+									<strong class="h4">6/7</strong>
+								</div>
+							</div><!--/.col-->
+							<div class="col-sm-4">
+								<div class="callout callout-warning">
+									<small class="text-muted">Trades en attente</small><br>
+									<strong class="h4">2</strong>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery-dateFormat.min.js') }}"></script>
+	<script>
+
+		$(document).ready(function() {
+			$.fn.datepicker.defaults.format = "dd/mm/yyyy";
+			$('.input-group.date').datepicker({
+				format: 'dd/mm/yyyy',
+				todayBtn: "linked",
+				language: "fr",
+				autoclose: true,
+				todayHighlight: true
+			});
+			var day = $.format.date(new Date(),'dd/MM/yyyy');
+			//alert(day);
+			$("#trade_form_submittedAt").datepicker(
+				"setDate", day);
+			 $("#trade_form_submittedAt").datepicker('update');
+
+			
+		});
+	</script>
+{% endblock %}    

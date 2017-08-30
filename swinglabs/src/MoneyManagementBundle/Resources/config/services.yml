@@ -1,0 +1,4 @@
+services:
+#    money_management.example:
+#        class: MoneyManagementBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

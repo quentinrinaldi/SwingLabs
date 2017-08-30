@@ -1,0 +1,96 @@
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog login-modal" role="document">
+    <div class="modal-content">
+
+      <div class="modal-body">
+         
+        <div class="login_container">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <form class="ajaxForm form-signin" action="{{ path("fos_user_security_check") }}" method="post" class="ajaxForm" novalidate>
+            <h2 class="form-signin-heading">Connexion</h2>
+
+            <div class="error">
+              <div class="error-content alert-danger">
+              </div>
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+            <input class="form-control" id="username" name="_username" placeholder="Email address" required="required" autofocus="" type="email">
+
+            <input id="password" name = "_password" class="form-control" placeholder="Mot de Passe" required="required" type="password">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> Se souvenir de moi
+              </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block login-submit-button" type="submit">Se connecter</button>
+          </form>
+          <a href="#" onclick='passwordRetriever();'>Mot de passe oublié</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function initAjaxForm()
+  {
+    $('body').on('submit', '.ajaxForm', function (e) {
+
+      e.preventDefault()
+      $('.error-content').html("");
+
+      $('.login-submit-button').addClass("disabled");
+      $('.login-submit-button').html("Connexion...");
+
+      $.ajax({
+        type: $(this).attr('method'),
+        url: $(this).attr('action'),
+        data: $(this).serialize()
+      })
+      .done(function (data) {
+       // alert(data.message)
+        if (data.success == false) {
+          $('.error-content').html("Pseudo ou mot de passe incorrect");
+          $('.login-submit-button').removeClass("disabled");
+          $('.login-submit-button').html("Se connecter");
+        }
+        else {
+          $('.login_container').replaceWith(data.message);
+          // redirect to previous page after 3 seconds
+          window.setTimeout(function() {
+            window.location.href = data.referer;
+          }, 3000);
+        }
+      })
+      .fail(function (jqXHR, textStatus, errorThrown) {
+        if (typeof jqXHR.responseJSON !== 'undefined') {
+          if (jqXHR.responseJSON.hasOwnProperty('form')) {
+            $('#form_body').html(jqXHR.responseJSON.form);
+          }
+
+          $('.form_error').html(jqXHR.responseJSON.message);
+
+        } else {
+          alert(errorThrown);
+        }
+
+      });
+    });
+  } 
+  function passwordRetriever($url) {
+  
+    var url = "{{ path('fos_user_resetting_request') }}"
+    $.ajax({
+        type: 'GET',
+        url: url
+  })
+    .done(function (data) {
+      $('.login_container').replaceWith(data);
+    });
+  } 
+  initAjaxForm();
+</script>

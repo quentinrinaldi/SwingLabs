@@ -1,0 +1,93 @@
+{% extends "base.html.twig" %}
+
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('assets/client_website/css/profile.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/shared_assets/css/jquery.dataTables.min.css') }}" />
+{% endblock %}
+
+{% block body_content %}
+  <div class="container main-container">
+   <div class="row">
+    <div class="col-md-3">
+      <div class="panel panel-default panel-menu">
+        <div class="panel-heading">
+          <h3 class="panel-title">Mon profil</h3>
+        </div>
+        <div class="panel-body">
+          <ul class="nav nav-pills nav-stacked">
+            <li class="" role="presentation">
+              <a href="{{ path('fos_user_profile_show') }}">Editer mes informations</a>
+            </li>
+            <li class="" role="presentation">
+              <a href="{{ path('fos_user_change_password') }}">Changer mon mot de passe</a>
+            </li>
+            <li class="active" role="presentation">
+              <a href="{{ path('registration_requests_overview') }}">Mes inscriptions</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7 personal-info">
+      <h1>Mes demandes d'inscriptions</h1>
+      <hr>
+      <div class="alert alert-info alert-dismissable">
+        <a class="panel-close close" data-dismiss="alert">×</a> 
+        <i class="fa fa-coffee"></i>
+        Nous vous avertirons dès lors que le statut de l'une de vos demandes évolue.
+      </div>
+
+      <table id="registration_requests_overview" class="display" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th>Emission</th>
+            <th>Date du tournage</th>
+            <th>Heure de début</th>
+            <th>Heure de fin</th>
+            <th>Nombre de places demandées</th>
+            <th>Statut de la demande</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for regRequest in regRequests %}
+            <tr>
+              <td>{{ regRequest.recording.tvShow.title }}</td>
+              <td>{{ regRequest.recording.date |format_date('EEEE dd MMMM y')}}</td>
+              <td>{{ regRequest.recording.startTime |format_time('HH\'h\'mm') }}</td>
+              <td>{{ regRequest.recording.endTime  |format_time('HH\'h\'mm')}}</td>
+              <td>{{ regRequest.peopleNumber}}</td>
+              <td>{{ regRequest.state }}</td>
+            </tr>
+          {% endfor %}
+
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<hr> 
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ asset('assets/shared_assets/js/jquery.dataTables.min.js') }}"></script>
+  <script>
+    $('#registration_requests_overview').DataTable({
+      "language": {
+        "lengthMenu": "Afficher _MENU_ dates par page",
+        "info": "Page _PAGE_/_PAGES_",
+        "emptyTable": "Aucune inscription n'est à afficher pour votre compte",
+        "infoEmpty": "",
+        "paginate": {
+          "first":      "Première page",
+          "last":       "Dernière page",
+          "next":       "Suivant",
+          "previous":   "Précédent"
+        }
+      },
+      "bFilter": false,
+    });
+  </script>
+
+{% endblock %}

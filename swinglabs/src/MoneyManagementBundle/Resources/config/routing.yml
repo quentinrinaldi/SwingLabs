@@ -1,0 +1,38 @@
+money_management_homepage:
+    path:     /
+    defaults: { _controller: MoneyManagementBundle:Trade:index }
+
+new_trade:
+    path: /trades/new
+    defaults: { _controller: MoneyManagementBundle:Trade:new}
+    methods: [GET, POST]
+
+# get_all_trades:
+#     path: /trades/all/{filter}
+#     defaults: { _controller: MoneyManagementBundle:Trade:getAll, filter: all}
+#     methods: [GET]
+
+get_all_trades:
+    path: /trades/all
+    defaults: { _controller: MoneyManagementBundle:Trade:getAll}
+    methods: [GET]
+
+get_awaiting_trades:
+    path: /trades/all/awaiting-trades
+    defaults: { _controller: MoneyManagementBundle:Trade:getAllAwaitingTrades}
+    methods: [GET]
+
+set_unsafe_trade:
+    path: /trades/{id}/set_unsafe
+    defaults: { _controller: MoneyManagementBundle:Trade:setUnsafe}
+    methods: [POST]
+
+set_safe_trade:
+    path: /trades/{id}/set_safe
+    defaults: { _controller: MoneyManagementBundle:Trade:setSafe}
+    methods: [POST]
+
+close_trade:
+    path: /trades/{id}/close
+    defaults: { _controller: MoneyManagementBundle:Trade:close}
+    methods: [POST]

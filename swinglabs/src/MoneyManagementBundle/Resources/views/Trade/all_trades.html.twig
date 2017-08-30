@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">Accueil</li>
+		<li class="breadcrumb-item active">Trades en cours</li>
+
+		<!-- Breadcrumb Menu-->
+		<li class="breadcrumb-menu d-md-down-none">
+			<div class="btn-group" role="group" aria-label="Button group">
+				<a class="btn" href="#"><i class="icon-speech"></i></a>
+				<a class="btn" href="./"><i class="icon-graph"></i> &nbsp;Dashboard</a>
+				<a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>
+			</div>
+		</li>
+	</ol>
+
+	<div class="container-fluid">
+		<div class="row">
+			<table id="trades_table" class="display" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>Ticker</th>
+						<th>Marché</th>
+						<th>Statut</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for trade in trades %}
+						<tr id="row-{{ regRequest.id }}">
+							<td>{{ trade.ticker }}</td>
+							<td>{{ trade.market }}</td>
+							<td>{{ trade.status }}</td>
+							<td>{{ trade.entryPrice }}</td>
+
+{# 							<td>{{ regRequest.createdAt |format_date('YMMd') }} {{ regRequest.createdAt |format_time('HH\'h\'mm') }}</td>
+ #}						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
