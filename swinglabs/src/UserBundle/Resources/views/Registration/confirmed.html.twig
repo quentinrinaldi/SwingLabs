@@ -1,27 +1,49 @@
-{% extends "base.html.twig" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('assets/client_website/css/confirmed_email.css') }}" />
-{% endblock %}
+<head>
 
-{% block body_content %}
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+	<!-- <link rel="shortcut icon" href="assets/ico/favicon.png"> -->
+
+	<title>CoreUI Bootstrap 4 Admin Template</title>
+
+	<!-- Icons -->
+	<link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/css/simple-line-icons.css') }}" />
+
+	<!-- Main styles for this application -->
+	<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
+
+</head>
+
+<body class="app flex-row align-items-center">
 	<div class="container">
-		<!-- Page Heading/Breadcrumbs -->
-		<div class="row">
-			<div class="confirmed-dialog text-center">
-				<div class="panel panel-success">
-					<div class="panel-heading">
-						<h3 class="panel-title">Félicitation, votre compte est désormais activé !</h3>
-					</div>
-					<div class="panel-body">
-						<p>Vous avez été automatiquement connecté. Bonne visite :)</p>
-						<a role="button" class="btn btn-primary" href="{{path('home')}}">Retour vers la page d'accueil</a>
-					</div>
-				</div>			
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card mx-4">
+					<div class="card-body p-4">
+						<h1>Felicitation !</h1>
+						<!-- Page Heading/Breadcrumbs -->
+						<div class="confirmed-dialog text-center">
+							<div class="panel panel-success">
+								<div class="panel-heading">
+									<h3 class="panel-title">Félicitation, votre demande a bien été prise en compte !</h3>
+								</div>
+								<div class="panel-body">
+									<p>Vous devriez recevoir dans quelques minutes un email vous permettant de valider votre compte</p>
+								</div>
+							</div>			
 
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
+</body>
+</html>
 
-{% endblock %}

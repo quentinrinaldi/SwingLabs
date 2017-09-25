@@ -18,10 +18,11 @@ class Trade
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
+        $this->status = "En attente";
     }
     /**
-     * @ORM\Column(type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -47,7 +48,7 @@ class Trade
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Veuillez insérer le nom de l'action")
      */
     private $stockName;
 
@@ -60,19 +61,22 @@ class Trade
 
     /**
      * @ORM\Column(type="decimal", scale=2)
+     * @Assert\NotBlank()
      */
 
     private $entryPrice;
 
     /**
      * @ORM\Column(type="decimal", scale=2)
+     @Assert\NotBlank()
      */
 
     private $stopPrice;
 
     /**
      * @ORM\Column(type="integer")
-      * @Assert\Range(
+     * @Assert\NotBlank()
+     * @Assert\Range(
      *      min = 1,
      *      minMessage = "Le nombre d'action ne peut être nul",
      * )
@@ -90,7 +94,7 @@ class Trade
      * )
      */
 
-    private $riskPerTrade;
+    private $initialRiskPerTrade;
 
 
     /**
@@ -103,11 +107,11 @@ class Trade
      * )
      */
 
-    private $assetRatio;
+    private $initialAssetRatio;
 
 
     /**
-     * @ORM\Column(type="decimal", scale=2)
+     * @ORM\Column(type="decimal", scale=2, nullable=true)
      * @Assert\Range(
      *      min = 0.01,
      *      minMessage = "Le R1 ne peut être égal à 0",
@@ -122,17 +126,17 @@ class Trade
     private $submittedAt;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
     */
     private $executedAt;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
     */
     private $securedAt;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
     */
     private $closedAt;
 
@@ -142,10 +146,6 @@ class Trade
      */    
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    // private $description;
 
     public function getId() 
     {
@@ -160,7 +160,8 @@ class Trade
     public function setUser($user) 
     {
         $this->user = $user;
-        $this->user->addTrade($this);
+        if ($user != null)
+            $this->user->addTrade($this);
     }
 
     public function getStatus() 
@@ -233,24 +234,24 @@ class Trade
         $this->nbOfShares = $nbOfShares;
     }
 
-    public function getRiskPerTrade() 
+    public function getInitialRiskPerTrade() 
     {
-        return $this->riskPerTrade;
+        return $this->initialRiskPerTrade;
     }
 
-    public function setRiskPerTrade($riskPerTrade) 
+    public function setInitialRiskPerTrade($initialRiskPerTrade) 
     {
-        $this->riskPerTrade = $riskPerTrade;
+        $this->initialRiskPerTrade = $initialRiskPerTrade;
     }
 
-    public function getAssetRatio() 
+    public function getInitialAssetRatio() 
     {
-        return $this->assetRatio;
+        return $this->initialAssetRatio;
     }
 
-    public function setAssetRatio($assetRatio) 
+    public function setInitialAssetRatio($initialAssetRatio) 
     {
-        $this->assetRatio = $assetRatio;
+        $this->initialAssetRatio = $initialAssetRatio;
     }
 
     public function getR1Price() 
@@ -301,4 +302,7 @@ class Trade
     {
     }
 
+    public function calculateR1Price (){
+        return $this->entryPrice - $this->stopPrice + $this->entryPrice;
+    }
 }

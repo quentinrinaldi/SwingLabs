@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 
 class TradeFormType extends AbstractType
@@ -26,7 +27,8 @@ class TradeFormType extends AbstractType
     {
     	$builder->add('stockName',TextType::class, array(
         'trim' => true,
-        'label'  => 'Nom de l\'action'
+        'label'  => 'Nom de l\'action',
+        'error_bubbling' => true
         ));
 
         $builder->add('ticker',TextType::class, array(
@@ -65,6 +67,10 @@ class TradeFormType extends AbstractType
         'format' => 'dd/MM/yyyy',
         'html5' => false
         ));
+
+        $builder->add('initialRiskPerTrade',HiddenType::class);
+        $builder->add('initialAssetRatio',HiddenType::class);
+        
     }
 
   public function configureOptions(OptionsResolver $resolver)

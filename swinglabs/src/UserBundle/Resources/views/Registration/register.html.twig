@@ -1,81 +1,96 @@
 
-<div class="modal-body register-body">
-  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  <div class="register_container">
-    <h2 class="form-signup-heading">Inscription</h2>
-    <!-- <div class="signup_container"> -->
-    {{ form_start(form, {'attr': {'class': 'form-signup registerAjaxForm', 'action' : path('fos_user_registration_register'), 'novalidate' : 'novalidate'  }} ) }}
+<!DOCTYPE html>
+<html lang="en">
 
-  
+<head>
 
-    <span class="form-group" style="display:inline;">
-    {{ form_widget(form.gender, {'attr': {'class': 'form-control selectpicker gender-input'}}) }}
-     {{ form_widget(form.firstName, {'attr': {'class':  'inline-input name-input', 'placeholder': 'Prénom'}})}}
-     {{ form_widget(form.lastName, {'attr': {'class': 'inline-input name-input', 'placeholder': 'Nom'}})}}
-     
-     {{ form_errors(form.gender) }}
-     {{ form_errors(form.firstName) }}
-     {{ form_errors(form.lastName) }}
-   </span>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-   {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Adresse email'}}) }}
-   {{ form_errors(form.email) }}
-   <div class="form-group">
+  <!-- <link rel="shortcut icon" href="assets/ico/favicon.png"> -->
 
-    
-    {{ form_widget(form.birthday, {'attr': {'class': 'js-datepicker birthday-input inline-input' , 'placeholder': 'Date de naissance', 'autocomplete' : 'off'}}) }}
-    {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control phoneNumber-input inline-input', 'placeholder': 'N° de téléphone'}}) }}
-    
-    {{ form_errors(form.birthday) }}
-    {{ form_errors(form.phoneNumber) }}
+  <title>CoreUI Bootstrap 4 Admin Template</title>
 
+  <!-- Icons -->
+  <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/css/simple-line-icons.css') }}" />
 
+  <!-- Main styles for this application -->
+  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
+
+</head>
+
+<body class="app flex-row align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mx-4">
+          <div class="card-body p-4">
+            <h1>Inscription</h1>
+            <p class="text-muted">Créer votre compte</p>
+            {{ form_start(form, {'attr': {'class': '', 'action' : path('fos_user_registration_register'), 'novalidate' : 'novalidate'  }} ) }}
+
+            <div class="input-group mb-3">
+              <span class="input-group-addon"><i class="icon-user"></i>
+              </span>
+              {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'Nom d\'utilisateur'}}) }}
+             
+            </div>
+             {{ form_errors(form.username) }}
+
+            <div class="input-group mb-3">
+              <span class="input-group-addon">@</span>
+              {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
+              
+            </div>
+            {{ form_errors(form.email) }}
+
+            <div class="input-group mb-3">
+              <span class="input-group-addon"><i class="icon-lock"></i>
+              </span>
+              {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
+              
+            </div>
+            {{ form_errors(form.plainPassword.first) }}
+
+            <div class="input-group mb-4">
+              <span class="input-group-addon"><i class="icon-lock"></i>
+              </span>
+              {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'Confirmer le mot de passe'}}) }}
+              
+            </div>
+            {{ form_errors(form.plainPassword.second) }}
+           
+            <button type="submit" class="btn btn-block btn-success">Créer votre compte</button>
+             {{ form_end(form) }}
+          </div>
+          <div class="card-footer p-4">
+            <div class="row">
+              <div class="col-6">
+                <button class="btn btn-block btn-facebook" type="button">
+                  <span>facebook</span>
+                </button>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-block btn-twitter" type="button">
+                  <span>twitter</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
-  {{ form_errors(form.plainPassword.first) }}
 
-  {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'Confirmer le mot de passe'}}) }}
-  {{ form_errors(form.plainPassword.second) }}
+  <!-- Bootstrap and necessary plugins -->
+  <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+  <script src="{{ asset('assets/js/tether.min.js') }}"></script>
+  <script src="{{ asset('assets/js/popper.min.js') }}"></script>
+  <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 
 
-  {{ form_widget(form.address, {'attr': {'class': 'form-control address-input inline-input', 'placeholder': 'Adresse'}}) }}
-  {{ form_widget(form.zipCode, {'attr': {'class': 'form-control inline-input zipCode-input', 'placeholder': 'Code postal'}}) }}
-  {{ form_errors(form.address) }}
-  {{ form_errors(form.zipCode) }}
-  
-  {{ form_widget(form.city, {'attr': {'class': 'form-control inline-input city-input', 'placeholder': 'Ville'}}) }}
-  {{ form_widget(form.country, {'attr': {'class': 'form-control inline-input country-input', 'placeholder': 'Pays'}}) }}
-  {{ form_errors(form.city) }}
-  {{ form_errors(form.country) }}
+</body>
 
-  {{ form_widget(form.newsletter, {'attr': {'class': 'newsletter_checkbox'}}) }}
-  {{ form_errors(form.newsletter) }}
-
-  {{ form_widget(form.recaptcha) }}
-  {{ form_errors(form.recaptcha) }}
-<div class="robot-error">
-{{ form_errors(form) }}
-</div>
-  <button class="btn btn-lg btn-primary btn-block register-submit-button" type="submit">Créer son compte</button>
-  {{ form_end(form) }}
-</div>
-</div>
-
-<script type="text/javascript">
-
-  $(document).ready(function() {
-    $('.js-datepicker').datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat: 'dd/mm/yy',
-      language: "fr",
-      defaultDate: "-30y" ,
-      maxDate: "+0d",
-      yearRange: '1900:' + new Date().getFullYear()
-    });
-    
-    initRegistrationForm($('.register-submit-button'));
-    $('.selectpicker').selectpicker({});
-  });
-  
-</script>
+</html>

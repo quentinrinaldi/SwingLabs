@@ -19,11 +19,14 @@ class TradeController extends Controller
 	public function newAction(Request $request)
 	{
 		$trade = new Trade();
+		$user = $this->getUser();
+		$trade->setUser($user);
  		$form = $this->createForm(TradeFormType::class, $trade);
 
  		$form->handleRequest($request);
  		if ($form->isSubmitted() && $form->isValid()) {
- 			
+ 			$trade->setR1Price($trade->calculateR1Price());
+ 			$em = $this->getDoctrine()->getManager();
  			$em->persist($trade);
  			$em->flush();
 

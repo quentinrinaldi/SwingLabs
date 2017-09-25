@@ -27,7 +27,8 @@
 						Déclarer un nouveau trade
 					</div>
 					<div class="card-body">
-						{{ form_start(form, { 'action': path('new_trade'), 'method':'POST'}) }}
+						{{ form_start(form, { 'action': path('new_trade'), 'method':'POST', 'attr': {'novalidate' : 'novalidate'} }) }}
+						{{ form_errors(form) }}
 
 						<div class="form-row">
 							<div class="form-group col-md->6">
@@ -72,7 +73,6 @@
 						</div>
 
 						
-						{{ form_widget(form) }}
 					</div>
 					<div class="card-footer">
 						<div class="form-group">
@@ -99,7 +99,7 @@
 							<div class="col-sm-4">
 								<div class="callout callout-primary">
 									<small class="text-muted">Ligne</small><br>
-									<strong class="h4">1433,23€</strong>
+									<strong class="h4" id="line-amount">1433,23€</strong>
 								</div>
 							</div>
 							<div class="col-sm-4">
@@ -113,26 +113,26 @@
 							<div class="col-sm-4">
 								<div class="callout callout-success">
 									<small class="text-muted">Quantité max</small><br>
-									<strong class="h4">1200</strong>
+									<strong class="h4" id="nb-of-shares-max">1200</strong>
 								</div>
 							</div><!--/.col-->
 							<div class="col-sm-4">
 								<div class="callout">
 									<small class="text-muted">% Capital</small><br>
-									<strong class="h4">78%</strong>
+									<strong class="h4" id="asset-ratio">78%</strong>
 								</div>
 							</div><!--/.col-->
 							<div class="col-sm-4">
 								<div class="callout callout-primary">
 									<small class="text-muted">Rique/trade</small><br>
-									<strong class="h4">0,70</strong>
+									<strong class="h4" id="risk-per-trade">0,70</strong>
 								</div>
 							</div><!--/.col-->
 							
 						</div><!--/.row-->
 						<div class="row justify-content-around">
 							
-							<div class="col-sm-3">
+							<div class="col-sm-4">
 								<div class="callout callout-danger">
 									<small class="text-muted">Cartouches</small><br>
 									<strong class="h4">6/7</strong>
@@ -142,6 +142,18 @@
 								<div class="callout callout-warning">
 									<small class="text-muted">Trades en attente</small><br>
 									<strong class="h4">2</strong>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="callout callout-warning">
+									<small class="text-muted">Entrée max</small><br>
+									<strong class="h4" id="max-entry">2,02</strong>
+								</div>
+							</div>
+							<div class="col-sm-0">
+								<div class="callout callout-warning">
+									<small class="text-muted">Capital</small><br>
+									<strong class="h4" id="account-value">10000</strong>
 								</div>
 							</div>
 						</div>
@@ -154,7 +166,46 @@
 {% block javascripts %}
 	<script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 	<script src="{{ asset('assets/js/jquery-dateFormat.min.js') }}"></script>
+	<script src="{{ asset('assets/js/trading-tools.js') }}"></script>
 	<script>
+
+		function refreshData() {
+			var entryPrice = $('#trade_form_entryPrice').val();
+			var stopPrice  = $('#trade_form_stopPrice').val();
+			var nbOfShares = $('#trade_form_nbOfShares').val();
+			var accountValue = $('#account-value').text();
+
+			var marketFeelingRatio = 0.007;
+			var currencyRatio = 1;
+			
+
+			var lineAmount = getLineAmount(nbOfShares, entryPrice, currencyRatio);
+			var nbOfSharesMax = getNbOfSharesMax(marketFeelingRatio, accountValue, currencyRatio, entryPrice, stopPrice);
+			var riskPerTrade = getRiskPerTrade(nbOfShares, entryPrice, stopPrice, accountValue, currencyRatio);
+			var assetRatio = getAssetRatio(nbOfShares, entryPrice, accountValue, currencyRatio);
+			var maxEntry = getMaxEntry(entryPrice, stopPrice);
+
+			(lineAmount == null) ? $('#line-amount').text("N/C") : $('#line-amount').text(lineAmount);
+			(nbOfSharesMax == null) ? $('#nb-of-shares-max').text("N/C") : $('#nb-of-shares-max').text(nbOfSharesMax);
+			// (riskPerTrade == null) ? $('#risk-per-trade').text("N/C") : $('#risk-per-trade').text(riskPerTrade);
+			// (assetRatio == null) ? $('#asset-ratio').text("N/C") : $('#asset-ratio').text(assetRatio);
+			(maxEntry == null) ? $('#max-entry').text("N/C") : $('#max-entry').text(maxEntry);
+
+			if (riskPerTrade == null) {
+				$('#risk-per-trade').text("N/C")
+			}
+			else {
+				$('#risk-per-trade').text(riskPerTrade);
+				$('#trade_form_initialRiskPerTrade').val(riskPerTrade);
+			}
+			if (assetRatio == null) {
+				$('#asset-ratio').text("N/C");
+			}
+			else {
+				$('#asset-ratio').text(assetRatio);
+				$('#trade_form_initialAssetRatio').val(assetRatio);
+			}
+		} 
 
 		$(document).ready(function() {
 			$.fn.datepicker.defaults.format = "dd/mm/yyyy";
@@ -166,10 +217,14 @@
 				todayHighlight: true
 			});
 			var day = $.format.date(new Date(),'dd/MM/yyyy');
-			//alert(day);
 			$("#trade_form_submittedAt").datepicker(
 				"setDate", day);
+
 			 $("#trade_form_submittedAt").datepicker('update');
+			 refreshData();
+			 $('#trade_form_entryPrice').on('input',refreshData);
+			 $('#trade_form_stopPrice').on('input',refreshData);
+			 $('#trade_form_nbOfShares').on('input',refreshData);
 
 			
 		});
